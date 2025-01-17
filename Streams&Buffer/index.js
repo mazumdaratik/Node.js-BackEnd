@@ -46,11 +46,18 @@ server.listen(3000, () => {
 
 // console.log('listening on port 300');
 
-/* const fs = require('fs');
 
-const readStream = fs.createReadStream(`${__dirname}/bigData.txt`, 'utf8');
+// ultimate efficient system using pipe
 
-readStream.on('data', (data) => {
-    console.log(data);
-// can use toSting to encode chunked data    
-}); */
+/* 
+const http = require ('http);
+const fs = require('fs');
+
+const server = http.createServer( (req, res) => {
+    const myReadStream = fs.createReadStream(`${__dirname}/bigData.txt`, 'utf8');
+   myReadStream.pipe(res)
+   
+}); 
+ server.listen(3000);
+ console.log('listening on port 3000');
+ */
