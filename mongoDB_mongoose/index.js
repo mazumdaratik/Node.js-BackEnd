@@ -7,7 +7,7 @@ app.use(express.json());
 
 //database conncetion with mongoose
 mongoose
-    .connect('mongodb://localhost/todos', {useNewUrlParser: true, useUnifiedTopology: true,})
+    .connect('mongodb://localhost:27017/todos', {useNewUrlParser: true, useUnifiedTopology: true,})
     .then( () => console.log('connection Succesfull'))
     .catch((err) => console.log(err))
 
@@ -22,6 +22,6 @@ function errorHandler(err, req, res, next){
     res.status(500).json({error: err});
 }
 
-app.listen(3000, () => {
-    console.log('app listening on port 3000');
+app.listen(4000, () => {
+    console.log('app listening on port 4000');
 });
