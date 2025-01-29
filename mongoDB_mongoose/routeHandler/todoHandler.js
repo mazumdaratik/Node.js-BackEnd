@@ -22,6 +22,23 @@ router.get('/', async (req, res) => { //select() , limit()
         });
     }
 });
+
+// Get active todos
+router.get('/active', async (req, res) => {
+    const todo = new Todo();
+    const data = await todo.findActive();
+    res.status(200).json({
+        data,
+    });
+});
+//get JS Todo
+router.get('/', async (req, res) => {
+    const data = await Todo.findByJS();
+    res.status(200).json({
+        data,
+    });
+});
+
 //Get a todo by ID
 router.get('/:id', async (req, res) => {
     try {
