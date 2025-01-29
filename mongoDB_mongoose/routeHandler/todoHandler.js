@@ -32,8 +32,15 @@ router.get('/active', async (req, res) => {
     });
 });
 //get JS Todo
-router.get('/', async (req, res) => {
+router.get('/js', async (req, res) => {
     const data = await Todo.findByJS();
+    res.status(200).json({
+        data,
+    });
+});
+//get Todos by language
+router.get('/language', async (req, res) => {
+    const data = await Todo.find().byLanguage("js");
     res.status(200).json({
         data,
     });
