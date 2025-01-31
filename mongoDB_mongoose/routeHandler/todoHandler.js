@@ -4,8 +4,9 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 const todoSchema = require('../schemas/todoschema')
 const Todo = new mongoose.model("Todo", todoSchema);
+const checkLogin = require('../middlewares/checklogin');
 
-router.get('/', async (req, res) => { //select() , limit()
+router.get('/', checkLogin, async (req, res) => { //select() , limit()
     try {
         // Fetch todos with status "inactive"
         const todos = await Todo.find({ status: "inactive" });
