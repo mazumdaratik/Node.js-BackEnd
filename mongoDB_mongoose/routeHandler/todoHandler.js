@@ -75,9 +75,12 @@ router.get('/:id', async (req, res) => {
     }
 });
 //Post a Todo
-router.post('/', async (req, res) => {
+router.post('/', checkLogin, async (req, res) => {
     try {
-        const newTodo = new Todo(req.body);
+        const newTodo = new Todo({
+            ...req.body,
+            user: req.userId
+        });
         await newTodo.save(); // Await the save operation directly
         res.status(200).json({
             message: "Todo was inserted successfully",
