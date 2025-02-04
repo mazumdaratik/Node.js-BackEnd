@@ -1,11 +1,27 @@
 const express = require('express');
 const multer = require('multer');
+const path = require('path');
 //file upload folder
 const UPLOADS_FOLDER = "./uploads";
 
+//define storage
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, UPLOADS_FOLDER);
+    },
+    filename: (req, file, cb) => {
+        const fileExt = path.extname(file.originalname);
+        const fileName = file.originalname
+                                    .replace(fileExt, '')
+                                    .toLowerCase()
+                                    .split(' ')
+                                    .join('-') + '-' + Date.now();
+        cb(null, fileName + fileExt);            
+    },
+});
 // prepare the final multer upload object
 var upload = multer({
-    dest: UPLOADS_FOLDER,
+    storage: storage,
     limits: {
         fileSize: 1000000,
     },
@@ -35,12 +51,12 @@ var upload = multer({
 
 const app = express();
 //application route for multiple uploads fileds
-/* app.post("/", upload.fields([
+app.post("/", upload.fields([
     {name: "avatar", maxCount: 1},
     {name: "gallery", maxCount: 2}
 ]), (req, res) => {
     res.send("Hello world");
-}); */
+});
 
 //application route for multiple files files
 /* app.post("/", upload.array("avatar", 3), (req, res) => {
@@ -48,19 +64,21 @@ const app = express();
 }); */
 
 //application route for single files
-app.post("/", upload.single("avatar"), (req, res) => {
-    res.send("Hello world");
-});
+// app.post("/", upload.single("avatar"), (req, res) => {
+//     res.send("Hello world");
+// });
 
 //default error handler
 app.use( (err, req, res , next) => {
     if(err) {
-        res.status(500).send(err.message);
+        if(err instanceof multer.MulterError) {
+            res.status(500).send(err.message);
+        }
     } else {
         res.send("success");
     }
 });
 
-app.listen(3000, () => {
+app.listen(4000, () => {
     console.log("app listening on port 3000")
 })
